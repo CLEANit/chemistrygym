@@ -1,11 +1,11 @@
 import multiprocessing
 from collections import OrderedDict
+from typing import Sequence
 
 import gym
 import numpy as np
 
 from stable_baselines.common.vec_env.base_vec_env import VecEnv, CloudpickleWrapper
-from stable_baselines.common.tile_images import tile_images
 
 
 def _worker(remote, parent_remote, env_fn_wrapper):
@@ -21,12 +21,15 @@ def _worker(remote, parent_remote, env_fn_wrapper):
                     info['terminal_observation'] = observation
                     observation = env.reset()
                 remote.send((observation, reward, done, info))
+            elif cmd == 'seed':
+                remote.send(env.seed(data))
             elif cmd == 'reset':
                 observation = env.reset()
                 remote.send(observation)
             elif cmd == 'render':
-                remote.send(env.render(*data[0], **data[1]))
+                remote.send(env.render(data))
             elif cmd == 'close':
+                env.close()
                 remote.close()
                 break
             elif cmd == 'get_spaces':
@@ -39,7 +42,7 @@ def _worker(remote, parent_remote, env_fn_wrapper):
             elif cmd == 'set_attr':
                 remote.send(setattr(env, data[0], data[1]))
             else:
-                raise NotImplementedError
+                raise NotImplementedError("`{}` is not implemented in the worker".format(cmd))
         except EOFError:
             break
 
@@ -107,6 +110,11 @@ class SubprocVecEnv(VecEnv):
         obs, rews, dones, infos = zip(*results)
         return _flatten_obs(obs, self.observation_space), np.stack(rews), np.stack(dones), infos
 
+    def seed(self, seed=None):
+        for idx, remote in enumerate(self.remotes):
+            remote.send(('seed', seed + idx))
+        return [remote.recv() for remote in self.remotes]
+
     def reset(self):
         for remote in self.remotes:
             remote.send(('reset', None))
@@ -125,26 +133,11 @@ class SubprocVecEnv(VecEnv):
             process.join()
         self.closed = True
 
-    def render(self, mode='human', *args, **kwargs):
+    def get_images(self) -> Sequence[np.ndarray]:
         for pipe in self.remotes:
             # gather images from subprocesses
             # `mode` will be taken into account later
-            pipe.send(('render', (args, {'mode': 'rgb_array', **kwargs})))
-        imgs = [pipe.recv() for pipe in self.remotes]
-        # Create a big image by tiling images from subprocesses
-        bigimg = tile_images(imgs)
-        if mode == 'human':
-            import cv2  # pytype:disable=import-error
-            cv2.imshow('vecenv', bigimg[:, :, ::-1])
-            cv2.waitKey(1)
-        elif mode == 'rgb_array':
-            return bigimg
-        else:
-            raise NotImplementedError
-
-    def get_images(self):
-        for pipe in self.remotes:
-            pipe.send(('render', {"mode": 'rgb_array'}))
+            pipe.send(('render', 'rgb_array'))
         imgs = [pipe.recv() for pipe in self.remotes]
         return imgs
 

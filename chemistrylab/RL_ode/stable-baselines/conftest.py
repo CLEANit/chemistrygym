@@ -1,7 +1,7 @@
 """Configures pytest to ignore certain unit tests unless the appropriate flag is passed.
 
 --rungpu: tests that require GPU.
---expensive: tests that take a long time to run (e.g. training an RL algorithm for many timesteps)."""
+--expensive: tests that take a long time to run (e.g. training an RL algorithm for many timestesps)."""
 
 import pytest
 

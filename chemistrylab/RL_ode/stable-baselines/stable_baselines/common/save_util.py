@@ -1,7 +1,11 @@
-import json
 import base64
+from collections import OrderedDict
+import io
+import json
 import pickle
+
 import cloudpickle
+import numpy as np
 
 
 def is_json_serializable(item):
@@ -126,3 +130,44 @@ def json_to_data(json_string, custom_objects=None):
             # Read as it is
             return_data[data_key] = data_item
     return return_data
+
+
+def params_to_bytes(params):
+    """
+    Turn params (OrderedDict of variable name -> ndarray) into
+    serialized bytes for storing.
+
+    Note: `numpy.savez` does not save the ordering.
+
+    :param params: (OrderedDict) Dictionary mapping variable
+        names to numpy arrays of the current parameters of the
+        model.
+    :return: (bytes) Bytes object of the serialized content.
+    """
+    # Create byte-buffer and save params with
+    # savez function, and return the bytes.
+    byte_file = io.BytesIO()
+    np.savez(byte_file, **params)
+    serialized_params = byte_file.getvalue()
+    return serialized_params
+
+
+def bytes_to_params(serialized_params, param_list):
+    """
+    Turn serialized parameters (bytes) back into OrderedDictionary.
+
+    :param serialized_params: (byte) Serialized parameters
+        with `numpy.savez`.
+    :param param_list: (list) List of strings, representing
+        the order of parameters in which they should be returned
+    :return: (OrderedDict) Dictionary mapping variable name to
+        numpy array of the parameters.
+    """
+    byte_file = io.BytesIO(serialized_params)
+    params = np.load(byte_file)
+    return_dictionary = OrderedDict()
+    # Assign parameters to return_dictionary
+    # in the order specified by param_list
+    for param_name in param_list:
+        return_dictionary[param_name] = params[param_name]
+    return return_dictionary
