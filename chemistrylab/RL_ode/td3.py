@@ -6,7 +6,7 @@ from stable_baselines.td3.policies import MlpPolicy
 from stable_baselines.common.vec_env import DummyVecEnv
 import chemistrylab
 
-env = gym.make('ReactionBench_0_overlap-v0')
+env = gym.make('ReactionBench_0-v0')
 render_mode = 'human'
 
 # The noise objects for TD3
