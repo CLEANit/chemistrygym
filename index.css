@@ -1,0 +1,170 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+
+.wrapper {
+	width: 1170px;
+	margin: 0 auto;
+}
+header {
+	height: 100px;
+	background: #262626;
+	width: 100%;
+	z-index: 10;
+	position: fixed;
+}
+.logo {
+	float: left;
+	line-height: 100px;
+	text-indent: 20px;
+}
+.logo a {
+	text-decoration: none;
+	font-size: 30px;
+	font-family: Lora;
+	color: #fff;
+	letter-spacing: 5px;
+}
+nav {
+	float: right;
+	line-height: 100px;
+}
+nav a {
+	text-decoration: none;
+	font-family: Lora;
+	letter-spacing: 4px;
+	font-size: 20px;
+	margin: 0 10px;
+	color: #fff;
+}
+.banner-area {
+	width: 100%;
+	height: 500px;
+	position: fixed;
+	top: 100px;
+	background-image: url(background.png);
+	-webkit-background-size: cover;
+	background-size: cover;
+	background-position: center center;
+}
+.banner-area h2 {
+	padding-top: 8%;
+	font-size: 70px;
+	font-family: Lora;
+	text-transform: uppercase;
+	color: #fff;
+}
+.content-area {
+	width: 100%;
+	position: relative;
+	top: 450px;
+	background: #ebebeb;
+	height: 1500px;
+}
+.content-area h2 {
+	font-family: Lora;
+	letter-spacing: 4px;
+	padding-top: 30px;
+	font-size: 40px;
+	margin: 0;
+}
+.content-area p {
+	padding: 2% 0px;
+	font-family: Lora;
+	line-height: 30px;
+}
+
+*{
+ margin: 0px;
+ padding: 0px;
+}
+
+body{
+ font-family: Lora;
+}
+
+.cards {
+    max-width: 1000px;
+    display: flex;
+    font-family: Lora;
+    padding: 100px;
+    padding-bottom: 50px;
+}
+
+.cards * {
+    box-sizing: border-box;
+}
+
+.card {
+	margin: 30px;
+	flex: 1;
+}
+
+.card__image {
+    width: 100%;
+    height: 400px;
+    display: block;
+    border-top: 2px solid #333333;
+    border-right: 2px solid #333333;
+    border-left: 2px solid #333333;
+}
+
+.card__content {
+    line-height: 1.5;
+    font-size: 0.9em;
+    padding: 15px;
+    background: #fafafa;
+    border-right: 2px solid #333333;
+    border-left: 2px solid #333333;
+}
+
+.card__info {
+    padding: 15px;
+    text-align: center;
+    color: #555555;
+    background: #eeeeee;
+    font-size: 0.8em;
+    border-bottom: 2px solid #333333;
+    border-right: 2px solid #333333;
+    border-left: 2px solid #333333;
+}
+
+.card__link {
+    color: #64968c;
+    text-decoration: none;    
+}
+
+.card__link:hover {
+    text-decoration: underline;
+}
+
+.footer {
+	background: #303036;
+	color: #d3d3d3;
+	height: 300px;
+	position: relative;
+	bottom: 0px;
+	width: 100%;
+	padding-bottom: 0px
+}
+
+.footer .footer-bottom {
+	background: #343a40;
+	color: #686868;
+	height: 50px;
+	width: 100%;
+	text-align: center;
+	position: absolute;
+	bottom: 0px;
+	left: 0px;
+	padding-top: 20px;
+}
+
+.subtitle {
+	font-size: 30px;
+}
+
+.API {
+	font-family: Lora;
+}
