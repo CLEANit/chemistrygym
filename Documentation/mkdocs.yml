@@ -1,0 +1,31 @@
+site_name: RLChemistry Documentation
+site_url: http://docs.RLChemistry.org
+site_description: Hashkat supporting documentation.
+site_author: Isaac Tamblyn, Mark Crowley, Amanuel Dawit
+theme: readthedocs
+
+repo_url: https://github.com/CLEANit/chemistrygym/branches
+
+nav:
+- Home: index.md
+- Getting Started: 
+    - What is RLChemistry?: WhatisRLChemistry.md
+    - Installation: Installation.md
+    - Using Command Line: UsingCmdLine.md
+    - Directory: Directory.md
+    - Quick Start: QuickStart.md
+- User Manual:  
+    - About: About.md
+    - Input: input.md
+    - Output: Output.md
+    - Visualizing Output: VisualizingOutput.md
+    - Developers: Developers.md
+    - Glossary: Glossary.md
+    - Troubleshooting: Troubleshooting.md
+    - Examples of RL algoritm and Results: RLalgo.md
+- Tutorials:
+    - 1  Reaction Bench Tutorial: Tutorial1.md
+    - 2  Extraction Bench Tutorial: Tutorial2.md
+    - 3  Distillation Bench Tutorial: Tutorial3.md 
+- Contact Us: Contact.md
+- Citation and Licence: License.md
