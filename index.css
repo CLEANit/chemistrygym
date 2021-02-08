@@ -85,8 +85,7 @@ body{
 }
 
 .cards {
-    max-width: 1000px;
-    display: flex;
+	display: flex;
     font-family: Lora;
     padding: 100px;
     padding-bottom: 50px;
