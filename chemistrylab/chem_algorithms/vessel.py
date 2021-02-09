@@ -26,6 +26,9 @@ sys.path.append("../../")
 from chemistrylab.chem_algorithms import material, util
 from chemistrylab.extract_algorithms import separate
 
+# the gas constant (in kPa * L * mol**-1 * K**-1)
+R = 8.314462619
+
 class Vessel:
     '''
     Class defining the Vessel object.
@@ -36,15 +39,16 @@ class Vessel:
             label, # Name of the vessel
             temperature=297, # K
             pressure=1.0, # Kpa
+      
             volume=1000.0, # mL
             unit='ml',
+
             materials={}, # moles of materials
             solutes={}, # moles of solutes
-            v_max=1000.0, # ml
-            v_min=1000.0, # mL
-            Tmax=500, # Kelvin
-            Tmin=250, # Kelvin
-            p_max=1.5, # atm
+            v_max=1.0, # L
+            v_min=0.001, # L
+            Tmax=500.0, # Kelvin
+            Tmin=250.0, # Kelvin
             default_dt=0.05, # Default time for each step
             n_pixels=100, # Number of pixel to represent layers
             open_vessel=True, # True means no lid
@@ -68,7 +72,6 @@ class Vessel:
         self.set_v_min(v_min, unit)
         self.Tmax = Tmax
         self.Tmin = Tmin
-        self.p_max = p_max
         self.open_vessel = open_vessel
         self.default_dt = default_dt
         self.n_pixels = n_pixels
@@ -91,6 +94,9 @@ class Vessel:
         # layers gaussian representation
         self._layers_position_dict = {self.Air.get_name(): 0.0}  # material.name: position
         self._layers_variance = 2.0
+
+        # calculate the maximal pressure based on what material is in the vessel
+        self.pmax = self.get_pmax()
 
         # event dict holding all the event functions
         self._event_dict = {
@@ -1165,7 +1171,17 @@ class Vessel:
         Method to get the vessel's maximal pressure property
         '''
 
-        return self.p_max
+        # set up a variable to contain the total pressure
+        max_pressure = 0
+
+        # calculate the total pressure in a vessel using the material dictionary
+        for __, [__, material_amount] in self._material_dict.items():
+            max_pressure += material_amount * R * self.Tmax / self.v_min
+
+        # if the vessel contains no material use 1 atm as a baseline (in kPa)
+        max_pressure = 101.325
+
+        return max_pressure
 
     def get_defaultdt(self):
         '''
@@ -1186,4 +1202,18 @@ class Vessel:
         Method to get the vessel's pressure property
         '''
 
-        return self.pressure
+        # set up a variable to contain the total pressure
+        total_pressure = 0
+
+        # calculate the total pressure in a vessel using the material dictionary
+        for __, [__, material_amount] in self._material_dict.items():
+            total_pressure += material_amount * R * self.temperature / self.volume
+
+        return total_pressure
+
+    def get_volume(self):
+        '''
+        Method to get the vessel's volume property
+        '''
+
+        return self.volume

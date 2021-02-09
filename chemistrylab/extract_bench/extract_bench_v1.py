@@ -136,7 +136,8 @@ class ExtractWorld_v1(ExtractBenchEnv):
                 extract_vessel=None
             ),
             solute="H2O",
-            target_material='dodecane'
+            target_material='dodecane',
+            out_vessel_path=os.getcwd()
         )
 
 class ExtractWorld_v2(ExtractBenchEnv):
