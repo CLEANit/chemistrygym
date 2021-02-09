@@ -47,6 +47,7 @@ class Vessel:
             solutes={}, # moles of solutes
             v_max=1.0, # L
             v_min=0.001, # L
+            p_max=100.3, # kpa
             Tmax=500.0, # Kelvin
             Tmin=250.0, # Kelvin
             default_dt=0.05, # Default time for each step
