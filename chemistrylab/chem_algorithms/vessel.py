@@ -38,16 +38,11 @@ class Vessel:
             self,
             label, # Name of the vessel
             temperature=297, # K
-            pressure=1.0, # Kpa
-      
-            volume=1000.0, # mL
-            unit='ml',
-
+            volume=1.0, # L
             materials={}, # moles of materials
             solutes={}, # moles of solutes
             v_max=1.0, # L
             v_min=0.001, # L
-            p_max=100.3, # kpa
             Tmax=500.0, # Kelvin
             Tmin=250.0, # Kelvin
             default_dt=0.05, # Default time for each step
@@ -67,10 +62,10 @@ class Vessel:
         self.label = label
         self.w2v = None
         self.temperature = temperature
-        self.pressure = pressure
-        self.set_volume(volume, unit)
-        self.set_v_max(v_max, unit)
-        self.set_v_min(v_min, unit)
+        self.pressure = self.get_pressure()
+        self.volume = volume
+        self.v_max = v_max
+        self.v_min = v_min
         self.Tmax = Tmax
         self.Tmin = Tmin
         self.open_vessel = open_vessel
@@ -982,22 +977,6 @@ class Vessel:
             colors=layers_color,
             x=separate.x
         )
-
-    # function to set the volume of the container and to specify the units
-    def set_volume(self, volume: float, unit='ml', override=False):
-        if not self._material_dict and not self._solute_dict:
-            self.volume = util.convert_volume(volume, unit)
-        elif override:
-            self.volume = util.convert_volume(volume, unit)
-            self._material_dict, self._solute_dict, _ = util.check_overflow(self._material_dict, self._solute_dict, self.volume)
-        else:
-            raise ValueError('Material dictionary or solute dictionary is not empty')
-
-    def set_v_min(self, volume: float, unit='ml'):
-        self.v_min = util.convert_volume(volume, unit)
-
-    def set_v_max(self, volume: float, unit='ml'):
-        self.v_max = util.convert_volume(volume, unit)
 
     # functions to access private properties
     def get_material_amount(
