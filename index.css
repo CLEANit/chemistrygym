@@ -181,14 +181,9 @@ footer{
  
 .footer-distributed h3{
 	color:  #ffffff;
-	font: normal 36px 'Cookie', cursive;
+	font-size: 40px;
 	margin: 0;
 }
- 
-.footer-distributed h3 span{
-	color:  #5383d3;
-}
- 
  
 .footer-distributed .footer-links{
 	color:  #ffffff;
