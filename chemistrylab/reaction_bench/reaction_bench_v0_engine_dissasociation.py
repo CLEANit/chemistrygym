@@ -34,13 +34,13 @@ sys.path.append("../../") # to access chemistrylab
 sys.path.append("../reactions/") # to access all reactions
 from chemistrylab.chem_algorithms.reward import ReactionReward
 from chemistrylab.chem_algorithms import vessel
-from chemistrylab.reactions.wurtz_reaction import Reaction
+from chemistrylab.reactions.decomp_reaction import Reaction
 
 R = 0.008314462618 # Gas constant (kPa * m**3 * mol**-1 * K**-1)
 wave_max = 800
 wave_min = 200
 
-class ReactionBenchEnv(gym.Env):
+class ReactionBenchEnvDissasociation(gym.Env):
     '''
     Class to define elements of an engine to represent a reaction.
     '''
@@ -191,10 +191,21 @@ class ReactionBenchEnv(gym.Env):
                 Tmin=self.Tmin,
                 default_dt=self.dt
             )
+
+            '''
+            for i in range(self.reaction.initial_in_hand.shape[0]):
+                self.n_init[i] = self.reaction.initial_in_hand[i]
+            '''
         else:
             with open(self.in_vessel_path, 'rb') as handle:
                 v = pickle.load(handle)
                 self.vessels = v
+
+            '''
+            for i in range(self.n_init.shape[0]):
+                material_name = self.reaction.labels[i]
+                self.n_init[i] = self.vessels._material_dict[material_name][1]
+            '''
 
         # set up a state variable
         self.state = None
@@ -517,7 +528,7 @@ class ReactionBenchEnv(gym.Env):
         # create an array to contain all state variables
         self.state = np.zeros(
             4 + # time T V P
-            self.reaction.n.shape[0] + # reactants
+            self.reaction.initial_in_hand.shape[0] + # reactants
             absorb.shape[0], # spectra
             dtype=np.float32
         )
@@ -542,10 +553,10 @@ class ReactionBenchEnv(gym.Env):
         self.state[3] = total_pressure / Pmax
 
         # remaining state variables pertain to reactant amounts and spectra
-        for i in range(self.reaction.n.shape[0]):
+        for i in range(self.reaction.initial_in_hand.shape[0]):
             self.state[i+4] = self.reaction.n[i] / self.reaction.nmax[i]
         for i in range(absorb.shape[0]):
-            self.state[i + self.reaction.n.shape[0] + 4] = absorb[i]
+            self.state[i + self.reaction.initial_in_hand.shape[0] + 4] = absorb[i]
 
     def _update_vessel(self):
         '''
@@ -785,7 +796,7 @@ class ReactionBenchEnv(gym.Env):
                 # reward -= 0
 
                 # if the amount that is in hand is below a certain threshold set it to 0
-                if self.reaction.cur_in_hand[i] < 1e-9:
+                if self.reaction.cur_in_hand[i] < 1e-8:
                     self.reaction.cur_in_hand[i] = 0.0
 
             # perform the reaction and update the molar concentrations of the reactants and products

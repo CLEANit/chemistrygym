@@ -22,6 +22,9 @@ import gym.spaces
 
 sys.path.append("../../")
 from chemistrylab.reaction_bench.reaction_bench_v0_engine import ReactionBenchEnv
+from chemistrylab.reaction_bench.reaction_bench_v0_engine_dissasociation import ReactionBenchEnvDissasociation
+from chemistrylab.reaction_bench.reaction__bench_v0_engine_equilibrium import ReactionBenchEnv_Equilibrium
+from chemistrylab.reaction_bench.reaction_bench_v0_engine_solute import ReactionBenchEnv_Solute
 
 class ReactionBenchEnv_0(ReactionBenchEnv):
     '''
@@ -71,4 +74,43 @@ class ReactionBenchEnv_0_Overlap(ReactionBenchEnv):
             ],
             desired="dodecane",
             overlap=True
+        )
+
+class ReactionBenchEnv_1(ReactionBenchEnvDissasociation):
+    def __init__(self):
+        super(ReactionBenchEnv_1, self).__init__(
+            materials=[
+                {"Material": "NaCl", "Initial": 1},
+            ],
+            solutes=[
+                {"Solute": "H2O", "Initial": 1}
+            ],
+            desired="Na",
+            overlap=False
+        )
+
+
+class ReactionBenchEnv_2(ReactionBenchEnv_Equilibrium):
+    def __init__(self):
+        super(ReactionBenchEnv_2, self).__init__(
+            materials=[
+                {"Material": "CuSO4", "Initial": 20},
+                {"Material": "CuS04*5H2O", "Initial": 20},
+                {"Material": "H2O", "Initial": 100}
+            ],
+            solutes=[
+                {"Solute": "H2O", "Initial": 100}
+            ],
+            desired="CuSO4",
+            overlap=False
+        )
+
+class ReactionBenchEnv_3(ReactionBenchEnv_Solute):
+    def __init__(self):
+        super(ReactionBenchEnv_3, self).__init__(
+            materials=[
+                {"Material": "B", "Initial": 1},
+            ],
+            desired="C",
+            overlap=False
         )

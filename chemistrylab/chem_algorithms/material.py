@@ -167,13 +167,13 @@ class Material:
 class Air(Material):
     def __init__(self):
         super().__init__(name='Air',
-                         density=1.225e-3, # in g/cm^3
-                         temperature=297, # in K
+                         density=1.225e-3,  # in g/cm^3
+                         temperature=297,  # in K
                          pressure=1,
                          phase='g',
-                         molar_mass=28.963, # in g/mol
+                         molar_mass=28.963,  # in g/mol
                          color=0.65,
-                         specific_heat=1.0035, # in J/g*K
+                         specific_heat=1.0035,  # in J/g*K
                          index=0
                          )
 
@@ -314,6 +314,7 @@ class Na(Material):
                          temperature=298,
                          pressure=1,
                          phase='s',
+                         solute=True,
                          molar_mass=22.990,
                          color=0.85,
                          charge=0.0,
@@ -333,6 +334,7 @@ class Cl(Material):
                          temperature=298,
                          pressure=1,
                          phase='g',
+                         solute=True,
                          molar_mass=35.453,
                          color=0.8,
                          charge=0.0,
@@ -418,6 +420,44 @@ class F2(Material):
                          index=15
                          )
 
+class CuSO4(Material):
+    def __init__(self):
+        super().__init__(name='CuS04',
+                         density=3.6,
+                         polarity=1.5,
+                         temperature=298,
+                         pressure=1,
+                         phase='s',
+                         molar_mass=159.6,
+                         color=0.9,
+                         charge=0.0,
+                         boiling_point=923,
+                         melting_point=383,
+                         specific_heat=0.853,
+                         enthalpy_fusion=27950.0,
+                         enthalpy_vapor=229700.0,
+                         index=8
+                         )
+
+class CuSO4Pentahydrate(Material):
+    def __init__(self):
+        super().__init__(name='CuS04*5H2O',
+                         density=2.286,
+                         polarity=1.5,
+                         temperature=298,
+                         pressure=1,
+                         phase='s',
+                         molar_mass=249.68,
+                         color=0.9,
+                         charge=0.0,
+                         boiling_point=923,
+                         melting_point=383,
+                         specific_heat=0.853,
+                         enthalpy_fusion=27950.0,
+                         enthalpy_vapor=229700.0,
+                         index=8
+                         )
+
 ## ---------- ## HYDROCARBONS ## ---------- ##
 
 class Dodecane(Material):
@@ -435,7 +475,7 @@ class Dodecane(Material):
             boiling_point=489.5,
             melting_point=263.6,
             solute=False,
-            specific_heat=2.3889, # in J/g*K
+            specific_heat=2.3889,  # in J/g*K
             enthalpy_fusion=19790.0,
             enthalpy_vapor=41530.0,
             index=16
@@ -631,6 +671,101 @@ class Ethoxyethane(Material):
             index=25
         )
 
+
+class EthylAcetate(Material):
+    def __init__(self):
+        super().__init__(
+            name='ethyl acetate',
+            density=0.902,
+            polarity=0.654,
+            temperature=298,
+            pressure=1,
+            phase='l',
+            molar_mass=88.106,
+            color=0.05,
+            charge=0.0,
+            boiling_point=350,
+            melting_point=189.6,
+            solvent=True,
+            specific_heat=1.904,  # in J/g*K
+            enthalpy_fusion=10480,
+            enthalpy_vapor=31940,
+            index=26
+        )
+
+
+class DiEthylEther(Material):
+    def __init__(self):
+        super().__init__(
+            name='diethyl ether',
+            density=0.7134,
+            polarity=1.3,
+            temperature=298,
+            pressure=1,
+            phase='l',
+            molar_mass=74.123,
+            color=0.05,
+            charge=0.0,
+            boiling_point=307.8,
+            melting_point=156.8,
+            solvent=True,
+            specific_heat=119.46,  # in J/g*K
+            enthalpy_fusion=-252.7e3,
+            enthalpy_vapor=27.247e3,
+            index=29
+        )
+
+
+##------Indicators------##
+
+
+class MethylRed(Material):
+    def __init__(self):
+        super().__init__(
+            name='methyl red',
+            density=0.902,
+            polarity=0.0,
+            temperature=298,
+            pressure=1,
+            phase='s',
+            molar_mass=88.106,
+            color=0.6,
+            charge=0.0,
+            boiling_point=630,
+            melting_point=455,
+            solute=True,
+            specific_heat=1.904,  # in J/g*K
+            enthalpy_fusion=10480,
+            enthalpy_vapor=31940,
+            index=27
+        )
+
+
+##-------Acids-------##
+
+
+class HCl(Material):
+    def __init__(self):
+        super().__init__(
+            name='HCl',
+            density=1.48e-3,
+            polarity=0.0,
+            temperature=298,
+            pressure=1,
+            phase='g',
+            molar_mass=88.106,
+            color=0.3,
+            charge=0.0,
+            boiling_point=350,
+            melting_point=189.6,
+            solute=True,
+            specific_heat=1.904,  # in J/g*K
+            enthalpy_fusion=10480,
+            enthalpy_vapor=31940,
+            index=28
+        )
+
+
 def get_materials():
     '''
     '''
@@ -644,8 +779,9 @@ def get_materials():
         ]):
             names_list.append(name)
             objects_list.append(obj)
-    
+
     return (names_list, objects_list)
+
 
 total_num_material = len(Material.__subclasses__())
 
