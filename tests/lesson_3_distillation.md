@@ -176,14 +176,6 @@ while not done:
     total reward: 0.00 
     Temperature of boiling vessel: 395.2   K 
     
-    
-
-
-    
-![png](lesson_3_distillation_files/lesson_3_distillation_8_1.png)
-    
-
-
     -------boil_vessel: change_heat (event)-------
     -------boil_vessel: mix (feedback_event)-------
     -------boil_vessel: update_layer (feedback_event)-------
